@@ -31,3 +31,8 @@ if [ ! -d masterdir ] ; then
     # No masterdir, go ahead and bootstrap it
     ./xbps-src binary-bootstrap ${builder_arch:=$(xbps-uhelper arch)}
 fi
+
+# Apply provided config file if it exists
+if [ -f xbps-mini-builder.conf ] ; then
+    cat xbps-mini-builder.conf >> etc/conf
+fi
