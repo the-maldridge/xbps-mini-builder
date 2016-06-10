@@ -1,0 +1,19 @@
+#!/bin/sh
+
+mkdir -p void-packages
+cd void-packages
+
+# Do we actually have the repo yet?
+if [ ! -d srcpkgs ] ; then
+    # No, clone a fresh copy
+    git clone https://github.com/voidlinux/void-packages .
+else
+    # Yes, pull in the changes for this run
+    git pull
+fi
+
+# Do we have a live build environment
+if [ ! -d masterdir ] ; then
+    # No masterdir, go ahead and bootstrap it
+    ./xbps-src binary-bootstrap ${builder_arch:=$(xbps-uhelper arch)}
+fi
