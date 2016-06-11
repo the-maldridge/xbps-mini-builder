@@ -40,11 +40,10 @@ if [ ! -d masterdir ] ; then
 fi
 
 # Apply provided config file if it exists
-if [ -f ../xbps-mini-builder.conf ] ; then
-    cat ../xbps-mini-builder.conf >> etc/conf
+if [ -f ../xbps-src.conf ] ; then
+    cat ../xbps-src.conf >> etc/conf
 fi
 
 # Main builder section
 packages="$(cat ../packages.list)"
 xbulk ${packages}
-

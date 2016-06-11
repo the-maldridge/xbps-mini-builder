@@ -1,4 +1,5 @@
 void-packages/
 xbps-mini-builder.conf
+xbps-src.conf
 packages.list
 id_rsa*
