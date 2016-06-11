@@ -20,19 +20,25 @@ if [ -d /etc/xbps.d ] ; then
 	cat /etc/xbps.d/* > etc/repos-remote-x86_64.conf
     fi
 
+    # The bootstrap config is loaded seperately
     if [ -f /etc/xbps.d/00-repository-main.conf ] ; then
 	repo="$(cat /etc/xbps.d/00-repository-main.conf | sed 's/^.*=//')"
-	printf 'XBPS_INSTALL_ARGS="--repository=%s --repository=%s/musl"' ${repo} ${repo} > etc/conf
+	printf 'XBPS_INSTALL_ARGS="--repository=%s --repository=%s/musl"\n' ${repo} ${repo} > etc/conf
     fi
 fi
 
 # Do we have a live build environment
 if [ ! -d masterdir ] ; then
     # No masterdir, go ahead and bootstrap it
-    ./xbps-src binary-bootstrap ${builder_arch:=$(xbps-uhelper arch)}
+    ./xbps-src binary-bootstrap
 fi
 
 # Apply provided config file if it exists
-if [ -f xbps-mini-builder.conf ] ; then
-    cat xbps-mini-builder.conf >> etc/conf
+if [ -f ../xbps-mini-builder.conf ] ; then
+    cat ../xbps-mini-builder.conf >> etc/conf
 fi
+
+# Main builder section
+packages="$(cat ../packages.list)"
+xbulk ${packages}
+
