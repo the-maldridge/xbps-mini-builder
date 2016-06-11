@@ -6,6 +6,7 @@ if [ ! -f id_rsa ] || [ ! -f id_rsa.pub ] ; then
     ssh-keygen -t rsa -N "" -C -f id_rsa
 fi
 
+# Create the void-packages directory if it doesn't exit
 mkdir -p void-packages
 cd void-packages
 
