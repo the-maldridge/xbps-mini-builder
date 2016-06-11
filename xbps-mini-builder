@@ -3,7 +3,7 @@
 # Do we have keys to sign with?
 if [ ! -f id_rsa ] || [ ! -f id_rsa.pub ] ; then
     rm -rf id_rsa id_rsa.pub
-    ssh-keygen -t rsa -N "" -C -f id_rsa
+    ssh-keygen -b 4096 -t rsa -N "" -f id_rsa
 fi
 
 # Create the void-packages directory if it doesn't exit
