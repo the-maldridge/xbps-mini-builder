@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# Do we have keys to sign with?
+if [ ! -f id_rsa ] || [ ! -f id_rsa.pub ] ; then
+    rm -rf id_rsa id_rsa.pub
+    ssh-keygen -t rsa -N "" -C -f id_rsa
+fi
+
 mkdir -p void-packages
 cd void-packages
 
