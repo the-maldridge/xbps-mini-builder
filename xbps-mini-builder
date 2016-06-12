@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Jump to the directory that owns this script
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
 # Do we have keys to sign with?
 if [ ! -f id_rsa ] || [ ! -f id_rsa.pub ] ; then
     rm -rf id_rsa id_rsa.pub
