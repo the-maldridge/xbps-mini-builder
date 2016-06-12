@@ -4,7 +4,7 @@
 cd "${0%/*}"
 
 # Do we have keys to sign with?
-if [ ! -f id_rsa ] || [ ! -f id_rsa.pub ] ; then
+if [ ! -f id_rsa ] ; then
     rm -rf id_rsa id_rsa.pub
     ssh-keygen -b 4096 -t rsa -N "" -f id_rsa
 fi
