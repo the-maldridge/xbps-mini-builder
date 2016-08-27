@@ -56,7 +56,9 @@ xbulk ${packages}
 xbps-rindex --sign --signedby "XBPS-mini-builder" --privkey ../id_rsa hostdir/binpkgs
 xbps-rindex --sign-pkg --privkey ../id_rsa hostdir/binpkgs/*.xbps
 
-if [ -d hostdir/binpkgs/nonfree ] ; then
-    xbps-rindex --sign --signedby "XBPS-mini-builder" --privkey ../id_rsa hostdir/binpkgs/nonfree
-    xbps-rindex --sign-pkg --privkey ../id_rsa hostdir/binpkgs/nonfree/*.xbps
-fi
+for folder in {multilib multilib/nonfree nonfree}; do
+    if [ -d "hostdir/binpkgs/${folder}" ] ; then
+        xbps-rindex --sign --signedby "XBPS-mini-builder" --privkey ../id_rsa "hostdir/binpkgs/${folder}"
+        xbps-rindex --sign-pkg --privkey "../id_rsa hostdir/binpkgs/${folder}/"*.xbps
+    fi
+done
