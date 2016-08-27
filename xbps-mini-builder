@@ -50,7 +50,8 @@ fi
 
 # Main builder section
 packages="$(cat ../packages.list)"
-xbulk ${packages}
+
+xbulk ${packages} "$@"
 
 # Sign built packages
 xbps-rindex --sign --signedby "XBPS-mini-builder" --privkey ../id_rsa hostdir/binpkgs
