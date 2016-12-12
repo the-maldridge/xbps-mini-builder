@@ -19,6 +19,7 @@ if [ ! -d srcpkgs ] ; then
     git clone https://github.com/voidlinux/void-packages .
 else
     # Yes, pull in the changes for this run
+    git reset --hard HEAD
     git pull
 fi
 
