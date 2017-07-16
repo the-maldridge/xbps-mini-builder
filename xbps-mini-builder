@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Jump to the directory that owns this script
-cd "${0%/*}"
+cd "${0%/*}" || exit 1
 
 # Do we have keys to sign with?
 if [ ! -f id_rsa ] ; then
@@ -11,7 +11,7 @@ fi
 
 # Create the void-packages directory if it doesn't exit
 mkdir -p void-packages
-cd void-packages
+cd void-packages || exit 2
 
 # Do we actually have the repo yet?
 if [ ! -d srcpkgs ] ; then
@@ -27,14 +27,14 @@ fi
 if [ -d /etc/xbps.d ] ; then
     cat /etc/xbps.d/* > etc/repos-remote.conf
     # If this platform is 64 bit, override those as well
-    if [ "$(xbps-uhelper arch)"="x86_64" ] ; then
+    if [ "$(xbps-uhelper arch)" = "x86_64" ] ; then
         cat /etc/xbps.d/* > etc/repos-remote-x86_64.conf
     fi
 
     # The bootstrap config is loaded seperately
     if [ -f /etc/xbps.d/00-repository-main.conf ] ; then
-        repo="$(cat /etc/xbps.d/00-repository-main.conf | sed 's/^.*=//')"
-        printf 'XBPS_INSTALL_ARGS="--repository=%s --repository=%s/musl"\n' ${repo} ${repo} > etc/conf
+        repo="$(sed 's/^.*=//' < /etc/xbps.d/00-repository-main.conf)"
+        printf 'XBPS_INSTALL_ARGS="--repository=%s --repository=%s/musl"\n' "${repo}" "${repo}" > etc/conf
     fi
 fi
 
