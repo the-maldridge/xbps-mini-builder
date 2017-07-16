@@ -9,6 +9,9 @@ if [ ! -f id_rsa ] ; then
     ssh-keygen -b 4096 -t rsa -N "" -f id_rsa
 fi
 
+# Remove old state
+rm -f changed
+
 # Create the void-packages directory if it doesn't exit
 mkdir -p void-packages
 cd void-packages || exit 2
@@ -17,10 +20,13 @@ cd void-packages || exit 2
 if [ ! -d srcpkgs ] ; then
     # No, clone a fresh copy
     git clone https://github.com/voidlinux/void-packages .
+
+    # On bootstrap we need to build everything
+    cp ../packages.list ../changed
 else
     # Yes, pull in the changes for this run
     git reset --hard HEAD
-    git pull
+    git pull | tee ../changed
 fi
 
 # Does this system use another set of repos
@@ -49,10 +55,11 @@ if [ -f ../xbps-src.conf ] ; then
     cat ../xbps-src.conf >> etc/conf
 fi
 
-# Main builder section
-packages="$(cat ../packages.list)"
-
-xbulk ${packages} "$@"
+for package in $(cat ../packages.list) ; do
+    if grep "${package}" ../changed; then
+        ./xbps-src pkg "${package}"
+    fi
+done
 
 # Sign built packages
 xbps-rindex --sign --signedby "XBPS-mini-builder" --privkey ../id_rsa hostdir/binpkgs
