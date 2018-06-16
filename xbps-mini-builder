@@ -19,7 +19,7 @@ cd void-packages || exit 2
 # Do we actually have the repo yet?
 if [ ! -d srcpkgs ] ; then
     # No, clone a fresh copy
-    git clone https://github.com/voidlinux/void-packages .
+    git clone https://github.com/void-linux/void-packages .
 
     # On bootstrap we need to build everything
     cp ../packages.list ../changed
