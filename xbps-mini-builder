@@ -48,6 +48,9 @@ fi
 if [ ! -d masterdir ] ; then
     # No masterdir, go ahead and bootstrap it
     ./xbps-src binary-bootstrap
+else
+    # Have a masterdir, keep it up to date
+    ./xbps-src bootstrap-update
 fi
 
 # Apply provided config file if it exists
