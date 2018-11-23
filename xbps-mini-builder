@@ -58,22 +58,22 @@ if [ -f ../xbps-src.conf ] ; then
     cat ../xbps-src.conf >> etc/conf
 fi
 
-for package in $(cat ../packages.list) ; do
+while read -r package ; do
     if grep "${package}" ../changed; then
         ./xbps-src pkg "${package}"
     fi
-done
+done < ../packages.list
 
 # Sign built packages
 xbps-rindex --sign --signedby "XBPS-mini-builder" --privkey ../id_rsa hostdir/binpkgs
 xbps-rindex --sign-pkg --privkey ../id_rsa hostdir/binpkgs/*.xbps
 
 for folder in multilib multilib/nonfree nonfree ; do
-    printf "Trying to sign packages in %s\n" ${folder}
+    printf "Trying to sign packages in %s\\n" ${folder}
     if [ -d "hostdir/binpkgs/${folder}" ] ; then
-        printf "Updating repodata in hostdir/binpkgs/%s\n" ${folder}
+        printf "Updating repodata in hostdir/binpkgs/%s\\n" ${folder}
         xbps-rindex --sign --signedby "XBPS-mini-builder" --privkey ../id_rsa "hostdir/binpkgs/${folder}/"
-        printf "Signing packages in hostdir/binpkgs/%s\n" ${folder}
+        printf "Signing packages in hostdir/binpkgs/%s\\n" ${folder}
         xbps-rindex --sign-pkg --privkey ../id_rsa hostdir/binpkgs/${folder}/*.xbps
     fi
 done
