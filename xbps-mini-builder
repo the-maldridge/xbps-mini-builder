@@ -6,7 +6,7 @@ cd "${0%/*}" || exit 1
 # Do we have keys to sign with?
 if [ ! -f id_rsa ] ; then
     rm -rf id_rsa id_rsa.pub
-    ssh-keygen -b 4096 -t rsa -N "" -f id_rsa
+    ssh-keygen -b 4096 -t rsa -m PEM -N "" -f id_rsa
 fi
 
 # Remove old state
