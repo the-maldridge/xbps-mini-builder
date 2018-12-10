@@ -58,11 +58,17 @@ if [ -f ../xbps-src.conf ] ; then
     cat ../xbps-src.conf >> etc/conf
 fi
 
-while read -r package ; do
-    if grep "${package}" ../changed; then
-        ./xbps-src pkg "${package}"
-    fi
-done < ../packages.list
+if [ -z "$@" ] ; then
+    while read -r package ; do
+        if grep "${package}" ../changed; then
+            ./xbps-src pkg "${package}"
+        fi
+    done < ../packages.list
+else
+	for pkg in "$@"; do
+		./xbps-src pkg "${pkg}"
+	done
+fi
 
 # Sign built packages
 xbps-rindex --sign --signedby "XBPS-mini-builder" --privkey ../id_rsa hostdir/binpkgs
