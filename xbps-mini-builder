@@ -58,7 +58,7 @@ if [ -f ../xbps-src.conf ] ; then
     cat ../xbps-src.conf >> etc/conf
 fi
 
-if [ -z "$@" ] ; then
+if [ -z "$*" ] ; then
     while read -r package ; do
         if grep "${package}" ../changed; then
             ./xbps-src pkg "${package}"
