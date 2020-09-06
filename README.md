@@ -25,3 +25,26 @@ will not build the package files until they are updated upstream. To manually
 build a specific package, run `./xbps-mini-builder <package>` and it will build
 the package, whether it has changed or not. Remember to only run this as the
 user that will be running the script normally.
+
+## Quick start with `snooze` and `runit`
+
+This example is a setup that runs `xbps-mini-builder` once a day.
+
+```bash
+# Assuming runit is installed, download snooze
+xbps-install -y snooze
+
+# Download `xbps-mini-builder` from github via git
+cd <directory>
+git clone https://github.com/the-maldridge/xbps-mini-builder.git
+
+# Add packages to list, separated by newline
+echo "package_one\npackage_two" >> <directory>/packages.list
+
+# Create the service and add the snooze command to the run file
+mkdir /etc/sv/<service_name>
+echo "snooze -d* <directory>/xbps-mini-installer" > /etc/sv/<service_name>/run
+
+# Add the service to runit
+ln -s /etc/sv/<service_name> /var/services
+```
